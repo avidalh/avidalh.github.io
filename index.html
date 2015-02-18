@@ -176,7 +176,7 @@ svg {
 .d3-tip {
   line-height: 1;
   font-weight: bold;
-  padding: 12px;
+  padding: 10px;
   background: rgba(0, 0, 0, 0.75);
   color: #fff;
   border-radius: 5px;
@@ -186,9 +186,10 @@ svg {
   box-sizing: border-box;
   display: inline;
   font-size: 10px;
+  padding: 5px;
   width: 100%;
   line-height: 1;
-  color: rgba(0, 0, 0, 0.75);
+  color: darkred;
   content: "\25BC";
   position: absolute;
   text-align: center;
@@ -234,7 +235,7 @@ body {
 
   var margin = {top: 10, right: 10, bottom: 225*1, left: 40},
       margin2 = {top: 425, right: 10, bottom: 20, left: 40},
-      width = 960 - margin.left - margin.right,
+      width = 1280 - margin.left - margin.right,
       height = 600 - margin.top - margin.bottom,
       height2 = 500 - margin2.top - margin2.bottom,
       padding = 15;
@@ -278,7 +279,12 @@ body {
     .attr('class', 'd3-tip')
     .offset([-5, 0])
     .html(function(d) {return "<span style='color:white'> <strong> PD :</strong> " + d.PD +
-      "% <br>Date: " + d.Date + "</span>";});
+      "% <br>Date: " + d.Date + "</span>"; });
+    // .transition()
+    //     .delay(100)
+    //     .duration(600)
+    //     .style("opacity",0)
+    //     .style('pointer-events', 'none');
 
 
   var brush = d3.svg.brush()
@@ -333,12 +339,12 @@ debugger;
 
   d3.csv("statistics.csv", type, function(error, data) {
     // x.domain(d3.extent(data.map(function(d) { return d.Date;}).slice(0, 60*4)));
-    x.domain([data[30*4].Date, data[0].Date]);
+    x.domain([data[30*6].Date, data[0].Date]);
     // debugger;
     // console.log(data.map(function(d){return d.PD;}).slice(1,5));
     // y.domain(d3.extent(data.map(function(d) { return d.PD; }).slice(0, 30*4)));
-    y.domain([d3.min(data.map(function(d) { return d.PD; }).slice(0, 30*4)) -.25, 
-      d3.max(data.map(function(d) { return d.PD; }).slice(0,30*4)) +.25]);
+    y.domain([d3.min(data.map(function(d) { return d.PD; }).slice(0, 30*6)) -.25, 
+      d3.max(data.map(function(d) { return d.PD; }).slice(0,30*6)) +.25]);
 
     xR.domain(x.domain()); // save a copy of x and y domains to use them when brushing...
     yR.domain(y.domain());
@@ -475,7 +481,7 @@ debugger;
       .text("PD mean: " + (leastSquaresCoeff[3]))
       .attr("class", "text-label")
       // .attr("text-align", "left")
-      .attr("x", width - 50)
+      .attr("x", width - 55)
       .attr("y", 12);  
 
 });
