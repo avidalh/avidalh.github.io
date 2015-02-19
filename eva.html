@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>simply eva </title>
+		<script type="text/javascript" src="../d3/d3.v3.js"></script>
+		<style type="text/css">
+		
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: black;
+				shape-rendering: crispEdges;
+			}
+			
+			.axis text {
+				font-family: sans-serif;
+				font-size: 11px;
+			}
+
+
+
+			/* No style rules here yet */		
+		
+
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+
+			//Width and height
+			var w = 1250; //total svg size
+			var h = 600;
+
+			var w1 = 1250; // containers for each chart
+			var h1 = 200;
+			var w2 = 1250;
+			var h2 = 200;
+			var w3 = 1250;
+			var h3 = 200;
+
+			var padding = 40;
+
+			var dataset = [ 0, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							0, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							0, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							0, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							0, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							0, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+							11, 12, 15, 20, 18, 17, 260, 18, 23, 25 ];
+
+			//Create SVG element
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+		
+			var parseDate = d3.time.format("%Y-%m-%d %H:%M").parse;
+			function type(d) {
+					d.Date = parseDate(d.Date);
+					d.PD = +d.PD;
+					return d;
+			}
+
+			var parser = d3.csv("statistics.csv", function(data) 
+				{	return{pd: data.PD};	});
+				
+			console.log(parser);
+
+			/*var xScale1 = d3.scale.ordinal()
+							.domain(d3.range(dataset.length))
+							.rangePoints([0 + padding, w1-padding], 0.0);
+			*/
+
+			var xScale1 = d3.time.scale()
+							.range([0, w1])
+							//.domain(timeData.x.domain);
+
+
+			var yScale1 = d3.scale.linear()
+							.domain([0, d3.max(dataset)])
+							.range([h1-padding,0+padding]);
+
+			//Define X axis
+			var xAxis1 = d3.svg.axis()
+							  .scale(xScale1)
+							  .orient("bottom")
+							  .ticks(20);
+
+			//Define Y axis
+			var yAxis1 = d3.svg.axis()
+							  .scale(yScale1)
+							  .orient("left")
+							  .ticks(5);
+
+			var line1 = d3.svg.line()
+				.interpolate("linear")
+				.x(function(d,i){return xScale1(i); })
+				.y(function(d){return yScale1(d); });
+
+
+
+			var xScale2 = d3.scale.ordinal()
+							.domain(d3.range(dataset.length))
+							.rangeRoundBands([0, w2], 0.05);
+
+			var yScale2 = d3.scale.linear()
+							.domain([0, d3.max(dataset)])
+							.range([0, h2]);
+
+			var xScale3 = d3.scale.ordinal()
+							.domain(d3.range(dataset.length))
+							.rangeRoundBands([0, w3], 0.05);
+
+			var yScale3 = d3.scale.linear()
+							.domain([0, d3.max(dataset)])
+							.range([0, h3]);
+
+			//Create X axis
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(0," + (h1 - padding) + ")")
+				.call(xAxis1);
+			
+			//Create Y axis
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(" + padding + ",0)")
+				.call(yAxis1);
+
+
+			
+
+			
+
+
+			
+
+			var line2 = d3.svg.line()
+				.interpolate("cardinal")
+				.x(function(d,i){return i * (w1-padding) / dataset.length + 0.5*w2 / dataset.length + padding; })
+				.y(function(d){return h2 + h2 -d*4-padding; });
+			
+			var line3 = d3.svg.line()
+				.interpolate("cardinal")
+				.x(function(d,i){return i * (w1 - padding) / dataset.length + 0.5*w2 / dataset.length + padding; })
+				.y(function(d){return h2 + h2 + h3 - d*4 - padding; });
+
+
+			svg.append("path")
+				.attr("d", line1(dataset))
+				.attr("class", "line1")
+				.attr("stroke", "red")
+				.attr("fill", "none")
+				.attr("stroke-width", "1")
+				.attr("stroke-opacity","1");
+
+			svg.append("path")
+				.attr("d", line2(dataset))
+				.attr("class", "line2")
+				.attr("stroke", "orange")
+				.attr("fill", "none")
+				.attr("stroke-width", "1")
+				.attr("stroke-opacity","1");
+			
+			svg.append("path")
+				.attr("d", line3(dataset))
+				.attr("class", "line3")
+				.attr("stroke", "blue")
+				.attr("fill", "none")
+				.attr("stroke-width", "1")
+				.attr("stroke-opacity","1");
+
+			//Create bars
+			/*svg.selectAll("rect")
+			   .data(dataset)
+			   .enter()
+			   .append("rect")
+			   .attr("x", function(d, i) {
+			   		return xScale(i);
+			   })
+			   .attr("y", function(d) {
+			   		return h1 - yScale(d);
+			   })
+			   .attr("width", xScale.rangeBand())
+			   .attr("height", function(d) {
+			   		return yScale(d);
+			   })
+			   .attr("fill", function(d) {
+					return "rgb(0, 0, " + (d * 10) + ")";
+			   });
+
+			//Create labels
+			svg.selectAll("text")
+			   .data(dataset)
+			   .enter()
+			   .append("text")
+			   .text(function(d) {
+			   		return d;
+			   })
+			   .attr("text-anchor", "middle")
+			   .attr("x", function(d, i) {
+			   		return xScale(i) + xScale.rangeBand() / 2;
+			   })
+			   .attr("y", function(d) {
+			   		return h1 - yScale(d) + 14;
+			   })
+			   .attr("font-family", "sans-serif")
+			   .attr("font-size", "11px")
+			   .attr("fill", "white");*/
+			
+		</script>
+	</body>
+</html>
