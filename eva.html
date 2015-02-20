@@ -91,7 +91,7 @@
 					return d;
 			}
 
-			var parser = d3.csv("statistics.csv", function(data) 
+			var parser = d3.csv("statistics.csv",type, function(data) 
 				{	return{pd: data.PD};	});
 				
 			console.log(parser);
