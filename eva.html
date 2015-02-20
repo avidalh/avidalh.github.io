@@ -32,11 +32,11 @@
 			var w = 1000; //total svg size
 			var h = 600;
 
-			var w1 = 1250; // containers for each chart
+			var w1 = w; // containers for each chart
 			var h1 = 200;
-			var w2 = 1250;
+			var w2 = w;
 			var h2 = 200;
-			var w3 = 1250;
+			var w3 = w;
 			var h3 = 200;
 
 			var padding = 40;
@@ -76,7 +76,7 @@
 							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
 							11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
 							5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-							11, 12, 15, 20, 18, 17, 260, 18, 23, 25 ];
+							11, 12, 15, 20, 18, 17, 0, 18, 23, 0 ];
 
 			//Create SVG element
 			var svg = d3.select("body")
@@ -84,27 +84,34 @@
 						.attr("width", w)
 						.attr("height", h);
 		
-			var parseDate = d3.time.format("%Y-%m-%d %H:%M").parse;
+
+/////////////////////////////////////////////////////////////
 			function type(d) {
-					d.Date = parseDate(d.Date);
-					d.PD = +d.PD;
-					return d;
-			}
+				//d.Date = parseDate(d.Date);
+				d.PD = +d.PD;
+				return d;
+			};
+			//read the csv
+			var parseDate = d3.time.format("%Y-%m-%d %H:%M").parse;
 
-			var parser = d3.csv("statistics.csv", function(data) 
-				{	return{pd: data.PD};	});
+			d3.csv("statistics.csv", function(data) {
+				console.log(data);
+				csvData = data;
+			});
+
 				
-			console.log(parser);
 
-			/*var xScale1 = d3.scale.ordinal()
+
+			
+			
+////////////////////////////////////////////////////////////
+
+
+
+			var xScale1 = d3.scale.ordinal()
 							.domain(d3.range(dataset.length))
 							.rangePoints([0 + padding, w1-padding], 0.0);
-			*/
-
-			var xScale1 = d3.time.scale()
-							.range([0, w1])
-							//.domain(timeData.x.domain);
-
+			
 
 			var yScale1 = d3.scale.linear()
 							.domain([0, d3.max(dataset)])
@@ -206,14 +213,14 @@
 			   .enter()
 			   .append("rect")
 			   .attr("x", function(d, i) {
-			   		return xScale(i);
+			   		return xScale1(i);
 			   })
 			   .attr("y", function(d) {
-			   		return h1 - yScale(d);
+			   		return h1 - yScale1(d);
 			   })
-			   .attr("width", xScale.rangeBand())
+			   .attr("width", "1")
 			   .attr("height", function(d) {
-			   		return yScale(d);
+			   		return yScale1(d);
 			   })
 			   .attr("fill", function(d) {
 					return "rgb(0, 0, " + (d * 10) + ")";
@@ -229,10 +236,10 @@
 			   })
 			   .attr("text-anchor", "middle")
 			   .attr("x", function(d, i) {
-			   		return xScale(i) + xScale.rangeBand() / 2;
+			   		return xScale1(i) + xScale1.rangeBand() / 2;
 			   })
 			   .attr("y", function(d) {
-			   		return h1 - yScale(d) + 14;
+			   		return h1 - yScale1(d) + 14;
 			   })
 			   .attr("font-family", "sans-serif")
 			   .attr("font-size", "11px")
