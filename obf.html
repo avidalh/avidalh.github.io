@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+
+<style>
+header {
+    background-color:#eeeeee;
+    color: steelblue;
+    text-align:center;
+    padding:5px; 
+    font: 10px sans-serif;
+}
+nav {
+    line-height:30px;
+    background-color:#eeeeee;
+    color: steelblue;
+    height:800px;
+    width:60px;
+    float:left;
+    padding:5px; 
+    font: 10px sans-serif;
+}
+section {
+    width:960px;
+    height:800px;
+    float:left;
+    padding:10px; 
+    font: 10px sans-serif;
+
+}
+option {
+    /*background-color:#eeeeee;*/
+    color: steelblue;
+    width:(300)px;
+    height:800px;
+    float:left;
+    padding:10px; 
+    font: 10px sans-serif;
+}
+footer {
+    background-color:#eeeeee;
+    color: steelblue;
+    clear:both;
+    text-align:center;
+    padding:5px; 
+    font: 10px sans-serif;
+}
+</style>
+
+<style>
+svg {
+  font: 10px sans-serif;
+
+}
+.dot {
+  stroke: steelblue;
+  stroke-width: 2;
+  fill: white;
+
+}
+
+
+
+.area {
+  fill: #ddd;
+  clip-path: url(#clip);
+  opacity:  0.25;
+  stroke: red;
+  stroke-width: 2;
+  stroke-opacity: 1;
+  marker-start: circle;
+}
+
+.lineLow {
+  stroke: black;
+  stroke-width : 1;
+  stroke-dasharray: 5,5;
+  stroke-opacity: .33;
+  fill: none;
+  shape-rendering: crispEdges;
+
+}
+
+.lineHi {
+  stroke: black;
+  stroke-width : 1;
+  stroke-dasharray: 5,5;
+  stroke-opacity: .33;
+  fill: none;
+  shape-rendering: crispEdges;
+
+}
+
+.line {
+  stroke: steelblue;
+  stroke-width : 3;
+  fill: none;
+  /*shape-rendering: crispEdges;*/
+}
+.line2 {
+  stroke: steelblue;
+  stroke-width : 3;
+  /*stroke-opacity: .5;*/
+  fill: none;
+  /*shape-rendering: crispEdges;*/
+}
+
+.line3 {
+  stroke: darkred;
+  stroke-width: 5;
+  stroke-opacity: .25;
+  fill: none;
+  /*shape-rendering: crispEdges;*/
+}
+
+.line4 {
+  stroke: green;
+  stroke-width: 5;
+  stroke-opacity: .25;
+  fill: none;
+  /*shape-rendering: crispEdges;*/
+}
+
+
+  /*shape-rendering: crispEdges;*/
+
+.brush .extent {
+  stroke: darkred;
+  stroke-width: 3;
+  stroke-opacity: .75;
+  fill-opacity: .4;
+  fill: steelblue;
+  /*shape-rendering: crispEdges;*/
+}
+
+
+.axis path{
+  fill: none;
+  stroke: black;
+  stroke-width: 1.5;
+} 
+
+.axis line{
+  fill: none;
+  stroke: black;
+  stroke-opacity: .5;
+  stroke-dasharray: 4,1;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}  
+
+.axis minor{
+  fill: none;
+  stroke: red;
+  stroke-width: 1;
+} 
+
+
+.tick text{
+  font: 10px sans-serif;
+
+}
+
+/*.axis tick{
+    stroke: red;
+    stroke-opacity: 0.25;
+    stroke-width: 1;
+}*/
+
+.grid path {
+      stroke-width: 0;
+}
+
+
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  border-radius: 5px;
+}
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  padding: 5px;
+  width: 100%;
+  line-height: 1;
+  color: darkred;
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -5px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+body {
+  font: 12px sans-serif;
+}
+
+</style>
+
+
+
+<body>
+
+
+<header>
+<h1>GCXO SMR main performance trends</h1>
+</header>
+
+<!-- 
+<nav>
+<center>
+<p><h2> navbar </h2> </p>
+<p> item1 </p>
+<p> item2 </p>
+<p> item3 </p>
+</center>
+</nav>
+ -->
+
+<section>
+<script src="d3.v3.min.js"></script>
+<script src="d3.tip.v0.6.6-2.js"></script>
+<script>
+
+eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('9 u={G:10,1f:10,J:2i*1,F:1C},13={G:2j,1f:10,J:20,F:1C},o=2h-u.F-u.1f,n=2g-u.G-u.J,19=2e-13.G-13.J,1l=15;9 1P=b.18.2f("%Y-%m-%d %H:%M").2k;9 x=b.18.z().O([0,o]),V=b.18.z().O([0,o]),1u=b.18.z().O([0,o]),1s=b.z.17().O([n,0])y=b.z.17().O([n,0]),U=b.z.17().O([19,0]);9 1r=b.e.A().z(x).1d("J").1A(-n,0).1o(4),1N=b.e.A().z(V).1d("J").1o(b.18.2l,1),1w=b.e.A().z(y).1d("F").1A(-o,5).1o(5),2q=b.e.A().z(U).1d("F");9 T=b.T().8(\'q\',\'b-T\').2r([-5,0]).2p(a(d){c"<1M 2o=\'2d:2m\'> <1D> h :</1D> "+d.h+"% <2n>k: "+d.k+"</1M>"});9 t=b.e.t().x(V).y(U).1k("t",23);9 B=b.e.B().1g("17").x(a(d){c x(d.k)}).y(a(d){c y(d.h)});9 1m=b.e.B().1g("17").x(a(d){c V(d.k)}).y(a(d){c U(d.h)});9 2s=b.e.B().1g("1I").x(a(d){c x(d.k)}).y(a(d){c y(d.h)*1.15});9 2b=b.e.B().1g("1I").x(a(d){c x(d.k)}).y(a(d){c y(d.h)*0.2c});9 e=b.1b("28").f("e").8("o",o+u.F+u.1f).8("n",n+u.G+u.J);e.f("29").f("2a").8("2t","14").f("1B").8("x",0).8("o",o).8("n",n);9 w=e.f("g").8("q","w").8("K","Q("+u.F+","+u.G+")");9 11=e.f("g").8("q","11").8("K","Q("+13.F+","+13.G+")");e.I(T);b.1L("2L.1L",1R,a(2K,j){x.p([j[1t*6].k,j[0].k]);y.p([b.1F(j.v(a(d){c d.h}).1H(0,1t*6))-.25,b.1E(j.v(a(d){c d.h}).1H(0,1t*6))+.25]);1u.p(x.p());1s.p(y.p());V.p(b.X(j.v(a(d){c d.k})));U.p([b.1F(j.v(a(d){c d.h}))-10,b.1E(j.v(a(d){c d.h}))]);w.f("1a").1K(j).8("q","B").8("14-1a","1J(#14)").8("d",B);9 1i=w.f("g");1i.8("14-1a","1J(#14)");1i.1e(\'.1x\').j(j).2M().f("2O").8("q","1x").8("r",3).8("1T",(a(d){c x(d.k)})).8("1Z",(a(d){c y(d.h)})).1k(\'2G\',T.2y).1k(\'2w\',T.2H);w.f("g").8("q","x A").8("K","Q(0,"+n+")").I(1r);w.f("g").8("q","y A").I(1w);11.f("1a").1K(j).8("q","1m").8("d",1m);11.f("g").8("q","x A").8("K","Q(0,"+19+")").I(1N);11.f("g").8("q","x t").I(t).1e("1B").8("y",-6).8("n",19+7);9 W=j.v(a(d){c d.k})9 s=b.O(1,W.L+1);9 C=j.v(a(d){c 2C(d.h)});9 S=1W(s,C);9 1z=W[0];9 1G=S[0]+S[1];9 22=W[W.L-1];9 24=S[0]*s.L+S[1];9 26=[[1z,1G,22,24]];9 1O=e.1e(".1O").j(26);e.f("l").8("l-1p","1h").8("K","Q("+(1l/2+0)+","+(n/2)+")2B(-2D)").l("P.D. (%)");e.f("l").8("l-1p","1h").8("K","Q("+(o/2)+","+(n-(1l/3)+1Y)+")").l("2E 1S (2F 2A 2z 2v 2u 2x)");e.f("l").8("l-1p","1h").8("K","Q("+(o/2)+","+10+")").l("2I 1S");e.f("l").l("h 2J: "+(S[3])).8("q","l-2N").8("x",o-1Y).8("y",12)});a 23(){x.p(t.27()?1u.p():[t.X()[0][0],t.X()[1][0]]);y.p(t.27()?1s.p():[t.X()[0][1],t.X()[1][1]]);w.1b(".B").8("d",B);w.1b(".x.A").I(1r);w.1b(".y.A").I(1w);w.1e(".1x").8("1T",(a(d){c x(d.k)})).8("1Z",(a(d){c y(d.h)}))}a 1R(d){d.k=1P(d.k);d.h=+d.h;c d}a 1W(s,C){9 E=a(1V,1U){c 1V+1U};9 1c=s.N(E)*1.0/s.L;9 R=C.N(E)*1.0/C.L;16.Z(s.N(E));16.Z(s.L);16.Z(C.N(E));16.Z(s.L);16.Z(R);9 1q=s.v(a(d){c 1v.1n(d-1c,2)}).N(E);9 1Q=C.v(a(d){c 1v.1n(d-R,2)}).N(E);9 1j=s.v(a(d,i){c(d-1c)*(C[i]-R)}).N(E);9 1y=1j/1q;9 1X=R-(1c*1y);9 21=1v.1n(1j,2)/(1q*1Q);c[1y,1X,21,R]}',62,175,'||||||||attr|var|function|d3|return||svg|append||PD||data|Date|text||height|width|domain|class||xSeries|brush|margin|map|focus|||scale|axis|line|ySeries||reduceSumFunc|left|top||call|bottom|transform|length||reduce|range||translate|yBar|leastSquaresCoeff|tip|y2|x2|xLabels|extent||log||context||margin2|clip||console|linear|time|height2|path|select|xBar|orient|selectAll|right|interpolate|middle|circlegroup|ssXY|on|padding|line2|pow|ticks|anchor|ssXX|xAxis|yR|30|xR|Math|yAxis|dot|slope|xt1|tickSize|rect|40|strong|max|min|yt1|slice|cardinal|url|datum|csv|span|xAxis2|trendline|parseDate|ssYY|type|timeline|cx|cur|prev|leastSquares|intercept|55|cy||rSquare|xt2|brushed|yt2||trendData|empty|section|defs|clipPath|line4|85|color|500|format|600|1200|225|425|parse|month|white|br|style|html|yAxis2|offset|line3|id|the|over|mouseout|chart|show|zoom|can|rotate|parseFloat|90|whole|you|mouseover|hide|zoomed|mean|error|statistics|enter|label|circle'.split('|')))
+
+
+</script>
+</section>
+<!-- <option>
+
+options...
+
+</option>
+ -->
+<footer>
+enaire tenerife norte
+</footer>
+
+</body>
