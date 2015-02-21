@@ -87,31 +87,18 @@
 
 /////////////////////////////////////////////////////////////
 			function type(d) {
-				//d.Date = parseDate(d.Date);
+				d.Date = parseDate(d.Date);
 				d.PD = +d.PD;
 				return d;
 			};
 			//read the csv
 			var parseDate = d3.time.format("%Y-%m-%d %H:%M").parse;
 
-			d3.csv("statistics.csv", function(data) {
+			d3.csv("statistics.csv",type, function(data) {
 				console.log(data);
 				csvData = data;
 			});
 
-<<<<<<< HEAD
-			var parser = d3.csv("statistics.csv",type, function(data) 
-				{	return{pd: data.PD};	});
-||||||| merged common ancestors
-			var parser = d3.csv("statistics.csv", function(data) 
-				{	return{pd: data.PD};	});
-=======
->>>>>>> 8c9c8621acbafcbf2f3f08289df916dd17ee2444
-				
-
-
-			
-			
 ////////////////////////////////////////////////////////////
 
 
