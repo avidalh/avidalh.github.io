@@ -64,7 +64,8 @@
 			var w3 = w;
 			var h3 = 200;
 
-			var padding = 40;
+			var paddingH = 50;
+			var paddingV = 40;
 
 			var dataset = [ 0, 10, 13, 19, 21, 25, 22, 18, 15, 13,
 							11, 12, 15, 20, 18, 17, 0, 18, 23, 0 ];
@@ -118,66 +119,66 @@
 			//				.domain(d3.range(dataset.length))
 			//				.rangePoints([0 + padding, w1-padding], 0.0);
 			var xScale1 = d3.time.scale()
-							.range([0+padding, w1-padding])
+							.range([0+paddingH, w1-paddingH])
 							.domain([data.Date[data.Date.length-1], data.Date[0]]);
 
 			var xScale2 = d3.time.scale()
-							.range([0+padding, w2-padding])
+							.range([0+paddingH, w2-paddingH])
 							.domain([data.Date[data.Date.length-1], data.Date[0]]);
 
 			var xScale3 = d3.time.scale()
-							.range([0+padding, w3-padding])
+							.range([0+paddingH, w3-paddingH])
 							.domain([data.Date[data.Date.length-1], data.Date[0]]);
 
 
 			var yScale1 = d3.scale.linear()
 							.domain([d3.min(data.PD) -25, d3.max(data.PD)])
-							.range([h1-padding,0+padding]);
+							.range([h1-0*paddingV,0+paddingV]);
 
 			var yScale2 = d3.scale.linear()
 							.domain([d3.min(data.SUCmeanDelay) -15, d3.max(data.SUCmeanDelay) +15])
-							.range([ h1 + h2 -padding, h2+ padding]);
+							.range([ h1 + h2 -0*paddingV, h2+ paddingV]);
 
 			var yScale3 = d3.scale.linear()
-							.domain([d3.min(data.ReadedPlots) - 10000, d3.max(data.ReadedPlots) +10000])
-							.range([ h1 + h2 + h3 - padding, h2 + h3 + padding]);
+							.domain([d3.min(data.ReadedPlots) - 0*10000, d3.max(data.ReadedPlots) +10000])
+							.range([ h1 + h2 + h3 - 0*paddingV, h2 + h3 + paddingV]);
 
 
 			//Define X axis
 			var xAxis1 = d3.svg.axis()
 							.scale(xScale1)
-							.tickSize(-(h1-2*padding),0)
+							.tickSize(-(h1-2*paddingV/2),0)
 							.orient("bottom")
 							.ticks(30);
 
 			var xAxis2 = d3.svg.axis()
 							.scale(xScale2)
-							.tickSize(-(h1+h2-2*padding),0)
+							.tickSize(-(h1+h2-2*paddingV/2),0)
 							.orient("bottom")
 							.ticks(30);
 
 			var xAxis3 = d3.svg.axis()
 							.scale(xScale3)
-							.tickSize(-(h1+h2+h3-2*padding),0)
+							.tickSize(-(h1+h2+h3-2*paddingV/2),0)
 							.orient("bottom")
 							.ticks(30);
 
 			var yAxis1 = d3.svg.axis()
 							.scale(yScale1)
 							.orient("left")
-							.tickSize(-(w1-2*padding),0)
+							.tickSize(-(w1-2*paddingH),0)
 							.ticks(5);
 
 			var yAxis2 = d3.svg.axis()
 							.scale(yScale2)
 							.orient("left")
-							.tickSize(-(w1-2*padding),0)
+							.tickSize(-(w1-2*paddingH),0)
 							.ticks(5);
 
 			var yAxis3 = d3.svg.axis()
 							.scale(yScale3)
 							.orient("left")
-							.tickSize(-(w1-2*padding),0)
+							.tickSize(-(w1-2*paddingH),0)
 							.ticks(5);
 
 
@@ -200,33 +201,33 @@
 			//Create X axis
 			svg.append("g")
 				.attr("class", "axis")
-				.attr("transform", "translate(0," + (h1 - padding) + ")")
+				.attr("transform", "translate(0," + (h1 - 0*paddingV) + ")")
 				.call(xAxis1);
 
 			svg.append("g")
 				.attr("class", "axis")
-				.attr("transform", "translate(0," + (h2 + h1 - padding) + ")")
+				.attr("transform", "translate(0," + (h2 + h1 - 0*paddingV) + ")")
 				.call(xAxis1);
 
 			svg.append("g")
 				.attr("class", "axis")
-				.attr("transform", "translate(0," + (h2 + h1 +h3 - padding) + ")")
+				.attr("transform", "translate(0," + (h2 + h1 +h3 - 0*paddingV) + ")")
 				.call(xAxis1);
 
 			//Create Y axis
 			svg.append("g")
 				.attr("class", "axis")
-				.attr("transform", "translate(" + padding + ",0)")
+				.attr("transform", "translate(" + paddingH + ",0)")
 				.call(yAxis1);
 
 			svg.append("g")
 				.attr("class", "axis")
-				.attr("transform", "translate(" + padding + ",0)")
+				.attr("transform", "translate(" + paddingH + ",0)")
 				.call(yAxis2);
 
 			svg.append("g")
 				.attr("class", "axis")
-				.attr("transform", "translate(" + padding + ",0)")
+				.attr("transform", "translate(" + paddingH + ",0)")
 				.call(yAxis3);
 
 			
@@ -247,8 +248,8 @@
 				.attr("fill", "none")
 				.attr("stroke-width", "2")
 				.attr("stroke-opacity","1");
-				
-			function colorline2(d){
+
+			function colorline2(data){
 				return "darkorange"
 			}
 			
