@@ -1,4 +1,4 @@
-Date,PD,Readed plots,Expected plots,Missed plots,Outer areas plots,SUC mean delay [ms],SUC max delay [ms],Notes
+Date,PD,ReadedPlots,ExpectedPlots,MissedPlots,OuterAreasPlots,SUCmeanDelay,SUCmaxDelay,Notes
 2015-02-22 20:00,98.15,11434,11650,216,0,99.81,304.6875, 
 2015-02-22 16:00,99.26,19877,20026,149,1,99.23,312.5, 
 2015-02-22 12:00,99.27,17694,17825,131,3,98.52,265.625, 
