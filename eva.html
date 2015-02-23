@@ -111,10 +111,13 @@
 
 
 
-			var xScale1 = d3.scale.ordinal()
-							.domain(d3.range(dataset.length))
-							.rangePoints([0 + padding, w1-padding], 0.0);
-			
+			//var xScale1 = d3.scale.ordinal()
+			//				.domain(d3.range(dataset.length))
+			//				.rangePoints([0 + padding, w1-padding], 0.0);
+			var xScale1 = d3.time.scale()
+							.range([0+padding, w1-padding])
+							.domain([datasetDates[30*6], datasetDates[0]]);
+
 
 			var yScale1 = d3.scale.linear()
 							.domain([0, d3.max(datasetPD)])
@@ -187,7 +190,7 @@
 
 
 			svg.append("path")
-				.attr("d", line1(dataset))
+				.attr("d", line1(datasetPD))
 				.attr("class", "line1")
 				.attr("stroke", "red")
 				.attr("fill", "none")
