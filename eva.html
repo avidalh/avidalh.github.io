@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>simply eva </title>
-		<script type="text/javascript" src="../d3/d3.v3.js"></script>
+		<script type="text/javascript" src="d3.v3.min.js"></script>
 		<style type="text/css">
 		
 			.axis path,
@@ -93,11 +93,19 @@
 			};
 			//read the csv
 			var parseDate = d3.time.format("%Y-%m-%d %H:%M").parse;
+			var datasetDates = [];
+			var datasetPD = [];
 
-			d3.csv("statistics.csv",type, function(data) {
-				console.log(data);
-				csvData = data;
-			});
+			d3.csv("statistics.csv",type, function(error,data) {
+				for (e in data){
+				//console.log(data[e].PD, data[e].Date);
+				//csvData = data;
+				datasetDates.push(data[e].Date);
+				datasetPD.push(data[e].PD);
+				}
+				//return datasetPD, datasetDates;
+			//});
+			console.log(datasetPD);
 
 ////////////////////////////////////////////////////////////
 
@@ -109,7 +117,7 @@
 			
 
 			var yScale1 = d3.scale.linear()
-							.domain([0, d3.max(dataset)])
+							.domain([0, d3.max(datasetPD)])
 							.range([h1-padding,0+padding]);
 
 			//Define X axis
@@ -201,7 +209,7 @@
 				.attr("fill", "none")
 				.attr("stroke-width", "1")
 				.attr("stroke-opacity","1");
-
+		});
 			//Create bars
 			/*svg.selectAll("rect")
 			   .data(dataset)
