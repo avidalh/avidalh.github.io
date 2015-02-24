@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>simply eva </title>
+		<title>__simply eva__ </title>
 		<script type="text/javascript" src="d3.v3.min.js"></script>
 		<style type="text/css">
 		
@@ -34,6 +34,14 @@
 				stroke-width: 1;
 				shape-rendering: crispEdges;
 			}
+			.axis2 line{
+				fill: none;
+				stroke: red;
+				stroke-opacity: .25;
+				stroke-dasharray: 4,1;
+				stroke-width: 1;
+				shape-rendering: crispEdges;
+			}
 
 			.axis minor{
 				fill: none;
@@ -46,12 +54,6 @@
 				stroke-width: 0;
 				shape-rendering: crispEdges;
 			}
-
-
-
-
-			/* No style rules here yet */		
-		
 
 		</style>
 	</head>
@@ -86,18 +88,12 @@
 			var colorline2 = "darkgreen";
 			var colorline3 = "darkgreen";
 
-			//var dataset = [ 0, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-			//				11, 12, 15, 20, 18, 17, 0, 18, 23, 0 ];
-
-			//Create SVG element
 			var svg = d3.select("body")
 						.append("svg")
 						.attr("class", "svgMain")
 						.attr("width", w)
 						.attr("height", h);
-		
 
-/////////////////////////////////////////////////////////////
 			function type(d) {
 				d.Date = parseDate(d.Date);
 				d.PD = +d.PD;
@@ -106,40 +102,22 @@
 				d.SUCmaxDelay = +d.SUCmaxDelay;
 				return d;
 			};
-			//read the csv
 			var parseDate = d3.time.format("%Y-%m-%d %H:%M").parse;
-			//var datasetDates = [];
-			//var datasetPD = [];
-			/*var dataset = {
-				PD: [],
-				Dates: []
-			};*/
 
 			d3.csv("statistics.csv",type, function(error,data) {
-				//for (e in data){
-				//console.log(data[e].PD, data[e].Date);
-				//csvData = data;
-				//dataset.Dates.push(data[e].Date);
-				//dataset.PD.push(data[e].PD);
-				//}
-				//return datasetPD, datasetDates;
-			//});
-
 				data.Date =data.map(function (d) { return d.Date; });
 				data.PD = data.map(function (d) { return d.PD; });
 				data.ReadedPlots = data.map(function (d) { return d.ReadedPlots; });
 				data.SUCmeanDelay = data.map(function (d) { return d.SUCmeanDelay; });
 				data.SUCmaxDelay = data.map(function(d) { return d.SUCmaxDelay;})
 
-			//console.log(dataset.PD);
+				/*data = data.slice(0,30);
+				data.Date = data.Date.slice(0,30);
+				data.PD = data.PD.slice(0,30);
+				data.SUCmeanDelay = data.SUCmeanDelay.slice(0,30);
+				data.SUCmaxDelay = data.SUCmaxDelay.slice(0,30);
+				data = data.slice(0,30);*/
 
-////////////////////////////////////////////////////////////
-
-
-
-			//var xScale1 = d3.scale.ordinal()
-			//				.domain(d3.range(dataset.length))
-			//				.rangePoints([0 + padding, w1-padding], 0.0);
 			var xScale1 = d3.time.scale()
 							.range([0+paddingH, w1-paddingH])
 							.domain([data.Date[data.Date.length-1], data.Date[0]]);
@@ -178,7 +156,7 @@
 							.scale(xScale1)
 							.tickSize(-(h1),0)
 							.orient("bottom")
-							.ticks(30);
+							.ticks(10);
 
 			var xAxis2 = d3.svg.axis()
 							.scale(xScale2)
@@ -208,7 +186,7 @@
 			var yAxis2_2 = d3.svg.axis()
 							.scale(yScale2_2)
 							.orient("right")
-							.tickSize(-0,0)
+							.tickSize(-w1+2*paddingH,0)
 							.ticks(5)
 							.tickFormat(function(d) { return parseInt(d, 10) + " ms"; });
 
@@ -270,7 +248,7 @@
 				.attr("transform", "translate(" + paddingH + ",0)")
 				.call(yAxis2);
 			svg.append("g")
-				.attr("class", "axis")
+				.attr("class", "axis axis2")
 				.attr("transform", "translate(" + (w1-paddingH) + ",0)")
 				.call(yAxis2_2);
 
@@ -329,23 +307,16 @@
 				.attr("x", (paddingH))             
 				.attr("y", top1-2)
 				.attr("text-anchor", "left")  
-				.style("font-size", "10px")
+				.style("font-size", "11px")
 				.attr("background", "blue")
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
-				.on("click", function() {
-					//Do something  on click
-					//console.log("hi");
-					window.open("test1.html","_self")
-					})
-				.on("mouseover", function(){
-					//console.log("OVER");
-					setcursor("pointer");
-					})
+				.on("click", function() {window.open("test1.html","_self");})
+				.on("mouseover", function(){setcursor("pointer");})
 				.on("mouseout",function(){
 					setcursor("default")
 				})
-				.text("Probability of detection. LifeTime mean: " + Number((d3.mean(data.PD)).toFixed(2)));
+				.text("Probability of detection (mean: " + Number((d3.mean(data.PD)).toFixed(2)) + " %)");
 			
 			function setcursor(cursor)
 					{
@@ -356,28 +327,28 @@
 				.attr("x", (paddingH))             
 				.attr("y", top2-2)
 				.attr("text-anchor", "left")  
-				.style("font-size", "10px") 
+				.style("font-size", "11px") 
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
-				.text("SUC mean delay. LifeTime mean: " + d3.mean(data.SUCmeanDelay) + " ms");
+				.text("SUC mean delay (mean: " + Number((d3.mean(data.SUCmeanDelay)).toFixed(2)) + " ms)");
 
 			svg.append("text")
-				.attr("x", (w1-paddingH*1.35))             
+				.attr("x", (w1-paddingH*2))             
 				.attr("y", top2-2)
 				.attr("text-anchor", "right")  
-				.style("font-size", "10px") 
+				.style("font-size", "11px") 
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
-				.text("SUC max delay");
+				.text("SUC max delay (mean: "+ Number((d3.mean(data.SUCmaxDelay)).toFixed(2)) + " ms)");
 			
 			svg.append("text")
 				.attr("x", paddingH)             
 				.attr("y", top3-2)
 				.attr("text-anchor", "left")  
-				.style("font-size", "10px") 
+				.style("font-size", "11px") 
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
-				.text("Plots in the record file" );
+				.text("Plots in the record file ("+ Number((d3.mean(data.ReadedPlots)).toFixed(2)) + " plts)" );
 			
 			window.onresize = function(event){
 				//console.log("resized!");
