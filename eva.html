@@ -132,7 +132,7 @@
 
 
 			var yScale1 = d3.scale.linear()
-							.domain([d3.min(data.PD) -10, d3.max(data.PD)+10])
+							.domain([d3.min(data.PD) -5, d3.max(data.PD)+0])
 							//.range([h1-0.5*paddingV,0.5*paddingV]);
 							.range([bottom1, top1]);
 
@@ -156,7 +156,7 @@
 							.scale(xScale1)
 							.tickSize(-(h1),0)
 							.orient("bottom")
-							.ticks(10);
+							.ticks(30);
 
 			var xAxis2 = d3.svg.axis()
 							.scale(xScale2)
@@ -174,27 +174,27 @@
 							.scale(yScale1)
 							.orient("left")
 							.tickSize(-(w1-2*paddingH),0)
-							.ticks(5)
+							.ticks(10)
 							.tickFormat(function(d) { return parseInt(d, 10) + " %"; });
 
 			var yAxis2 = d3.svg.axis()
 							.scale(yScale2)
 							.orient("left")
 							.tickSize(-(w1-2*paddingH),0)
-							.ticks(5)
+							.ticks(10)
 							.tickFormat(function(d) { return parseInt(d, 10) + " ms"; });
 			var yAxis2_2 = d3.svg.axis()
 							.scale(yScale2_2)
 							.orient("right")
 							.tickSize(-w1+2*paddingH,0)
-							.ticks(5)
+							.ticks(10)
 							.tickFormat(function(d) { return parseInt(d, 10) + " ms"; });
 
 			var yAxis3 = d3.svg.axis()
 							.scale(yScale3)
 							.orient("left")
 							.tickSize(-(w1-2*paddingH),0)
-							.ticks(5)
+							.ticks(10)
 							.tickFormat(function(d) { return parseInt(d, 10) + " plts."; });;
 
 
@@ -297,7 +297,7 @@
 				.attr("x", (w / 2))             
 				.attr("y", top1-paddingV+17)
 				.attr("text-anchor", "middle")  
-				.style("font-size", "16px") 
+				.style("font-size", "20px") 
 				.style("background-color", "red")
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
@@ -348,7 +348,7 @@
 				.style("font-size", "11px") 
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
-				.text("Plots in the record file ("+ Number((d3.mean(data.ReadedPlots)).toFixed(2)) + " plts)" );
+				.text("Plots in the file (mean: "+ Number((d3.mean(data.ReadedPlots)).toFixed(0)) + " plts)" );
 			
 			window.onresize = function(event){
 				//console.log("resized!");
