@@ -12,34 +12,39 @@
 				stroke: black;
 				shape-rendering: crispEdges;
 			}*/
+
+			.svgMain {margin-left:auto; margin-right: auto;}
 			
 			.axis text {
 				font-family: sans-serif;
-				font-size: 11px;
+				font-size: 9px; /*11px;*/
 			}
 			.axis path{
-			  fill: none;
-			  stroke: black;
-			  stroke-width: 1.5;
+				fill: none;
+				stroke: black;
+				stroke-width: 1.5;
+				shape-rendering: crispEdges;
 			} 
 
 			.axis line{
-			  fill: none;
-			  stroke: black;
-			  stroke-opacity: .25;
-			  stroke-dasharray: 4,1;
-			  stroke-width: 1;
-			  shape-rendering: crispEdges;
-			}  
+				fill: none;
+				stroke: black;
+				stroke-opacity: .25;
+				stroke-dasharray: 4,1;
+				stroke-width: 1;
+				shape-rendering: crispEdges;
+			}
 
 			.axis minor{
-			  fill: none;
-			  stroke: red;
-			  stroke-width: 1;
+				fill: none;
+				stroke: red;
+				stroke-width: 1;
+				shape-rendering: crispEdges;
 			} 
 
 			.grid path {
 				stroke-width: 0;
+				shape-rendering: crispEdges;
 			}
 
 
@@ -50,29 +55,44 @@
 
 		</style>
 	</head>
-	<body>
+	<body> <p> <center>
 		<script type="text/javascript">
 
 			//Width and height
-			var w = 1280; //total svg size
-			var h = 700;
 
+			var paddingH = 200;
+			var paddingV = 50;
+			
+			var w = document.documentElement.clientWidth; //total svg size
+			var h = document.documentElement.clientHeight - 3*paddingV;
+
+			
 			var w1 = w; // containers for each chart
-			var h1 = h/3;
+			var h1 = (h-4*paddingV)/3;
 			var w2 = w;
-			var h2 = h/3;
+			var h2 = (h-4*paddingV)/3;
 			var w3 = w;
-			var h3 = h/3;
+			var h3 = (h-4*paddingV)/3;
 
-			var paddingH = 50;
-			var paddingV = 60;
+			
+			var top1 = paddingV;
+			var bottom1 = h1 + paddingV;
+			var top2 = bottom1 + paddingV;
+			var bottom2 = top2 + h2;
+			var top3 = bottom2 + paddingV;
+			var bottom3 = top3 + h3;
 
-			var dataset = [ 0, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-							11, 12, 15, 20, 18, 17, 0, 18, 23, 0 ];
+			var colorline1 = "darkgreen";
+			var colorline2 = "darkgreen";
+			var colorline3 = "darkgreen";
+
+			//var dataset = [ 0, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+			//				11, 12, 15, 20, 18, 17, 0, 18, 23, 0 ];
 
 			//Create SVG element
 			var svg = d3.select("body")
 						.append("svg")
+						.attr("class", "svgMain")
 						.attr("width", w)
 						.attr("height", h);
 		
@@ -83,6 +103,7 @@
 				d.PD = +d.PD;
 				d.ReadedPlots = +d.ReadedPlots;
 				d.SUCmeanDelay = +d.SUCmeanDelay;
+				d.SUCmaxDelay = +d.SUCmaxDelay;
 				return d;
 			};
 			//read the csv
@@ -108,6 +129,7 @@
 				data.PD = data.map(function (d) { return d.PD; });
 				data.ReadedPlots = data.map(function (d) { return d.ReadedPlots; });
 				data.SUCmeanDelay = data.map(function (d) { return d.SUCmeanDelay; });
+				data.SUCmaxDelay = data.map(function(d) { return d.SUCmaxDelay;})
 
 			//console.log(dataset.PD);
 
@@ -132,22 +154,29 @@
 
 
 			var yScale1 = d3.scale.linear()
-							.domain([d3.min(data.PD) -25, d3.max(data.PD)])
-							.range([h1-0.5*paddingV,0.5*paddingV]);
+							.domain([d3.min(data.PD) -10, d3.max(data.PD)+10])
+							//.range([h1-0.5*paddingV,0.5*paddingV]);
+							.range([bottom1, top1]);
 
 			var yScale2 = d3.scale.linear()
-							.domain([d3.min(data.SUCmeanDelay) -15, d3.max(data.SUCmeanDelay) +15])
-							.range([ h1 + h2 -0.5*paddingV, h2+ 0.5*paddingV]);
+							.domain([d3.min(data.SUCmeanDelay) -50, d3.max(data.SUCmeanDelay) +20])
+							//.range([ h1 + h2 -0.5*paddingV, h2+ 0.5*paddingV]);
+							.range([bottom2, top2]);
+			var yScale2_2 = d3.scale.linear()
+							.domain([d3.min(data.SUCmaxDelay) -2000, d3.max(data.SUCmaxDelay) +2000])
+							//.range([ h1 + h2 -0.5*paddingV, h2+ 0.5*paddingV]);
+							.range([bottom2, top2]);
 
 			var yScale3 = d3.scale.linear()
 							.domain([d3.min(data.ReadedPlots) - 0*10000, d3.max(data.ReadedPlots) +10000])
-							.range([ h1 + h2 + h3 - 0.5*paddingV, h2 + h3 + 0.5*paddingV]);
+							//.range([ h1 + h2 + h3 - 0.5*paddingV, h2 + h3 + 0.5*paddingV]);
+							.range([bottom3, top3]);
 
 
 			//Define X axis
 			var xAxis1 = d3.svg.axis()
 							.scale(xScale1)
-							.tickSize(-(h1-paddingV),0)
+							.tickSize(-(h1),0)
 							.orient("bottom")
 							.ticks(30);
 
@@ -167,19 +196,29 @@
 							.scale(yScale1)
 							.orient("left")
 							.tickSize(-(w1-2*paddingH),0)
-							.ticks(5);
+							.ticks(5)
+							.tickFormat(function(d) { return parseInt(d, 10) + " %"; });
 
 			var yAxis2 = d3.svg.axis()
 							.scale(yScale2)
 							.orient("left")
 							.tickSize(-(w1-2*paddingH),0)
-							.ticks(5);
+							.ticks(5)
+							.tickFormat(function(d) { return parseInt(d, 10) + " ms"; });
+			var yAxis2_2 = d3.svg.axis()
+							.scale(yScale2_2)
+							.orient("right")
+							.tickSize(-0,0)
+							.ticks(5)
+							.tickFormat(function(d) { return parseInt(d, 10) + " ms"; });
 
 			var yAxis3 = d3.svg.axis()
 							.scale(yScale3)
 							.orient("left")
 							.tickSize(-(w1-2*paddingH),0)
-							.ticks(5);
+							.ticks(5)
+							.tickFormat(function(d) { return parseInt(d, 10) + " plts."; });;
+
 
 
 			var line1 = d3.svg.line()
@@ -191,6 +230,12 @@
 				.interpolate("linear")
 				.x(function(d){return xScale2(d.Date); })
 				.y(function(d){return yScale2(d.SUCmeanDelay); });
+			
+			var line2_2 = d3.svg.line()
+				.interpolate("linear")
+				.x(function(d){return xScale2(d.Date); })
+				.y(function(d){return yScale2_2(d.SUCmaxDelay); });
+
 
 			var line3 = d3.svg.line()
 				.interpolate("linear")
@@ -201,17 +246,17 @@
 			//Create X axis
 			svg.append("g")
 				.attr("class", "axis")
-				.attr("transform", "translate(0," + (h1 - 0.5*paddingV) + ")")
+				.attr("transform", "translate(0," + (bottom1) + ")")
 				.call(xAxis1);
 
 			svg.append("g")
 				.attr("class", "axis")
-				.attr("transform", "translate(0," + (h2 + h1 - 0.5*paddingV) + ")")
+				.attr("transform", "translate(0," + (bottom2) + ")")
 				.call(xAxis1);
 
 			svg.append("g")
 				.attr("class", "axis")
-				.attr("transform", "translate(0," + (h2 + h1 +h3 - 0.5*paddingV) + ")")
+				.attr("transform", "translate(0," + (bottom3) + ")")
 				.call(xAxis1);
 
 			//Create Y axis
@@ -224,6 +269,10 @@
 				.attr("class", "axis")
 				.attr("transform", "translate(" + paddingH + ",0)")
 				.call(yAxis2);
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(" + (w1-paddingH) + ",0)")
+				.call(yAxis2_2);
 
 			svg.append("g")
 				.attr("class", "axis")
@@ -236,69 +285,142 @@
 			svg.append("path")
 				.attr("d", line1(data))
 				.attr("class", "line1")
-				.attr("stroke", "darkblue")
+				.attr("stroke", colorline1)
 				.attr("fill", "none")
-				.attr("stroke-width", "2")
-				.attr("stroke-opacity","1");
+				.attr("stroke-width", "1.5")
+				.attr("stroke-opacity",".75");
 //debugger;
+
+			svg.append("path")
+				.attr("d", line2_2(data))
+				.attr("class", "line2")
+				.attr("stroke", "red")
+				.attr("fill", "none")
+				.attr("stroke-width", "1.5")
+				.attr("stroke-opacity",".75");
+
 			svg.append("path")
 				.attr("d", line2(data))
 				.attr("class", "line2")
-				.attr("stroke", colorline2(data))
+				.attr("stroke", colorline2)
 				.attr("fill", "none")
-				.attr("stroke-width", "2")
-				.attr("stroke-opacity","1");
-
-			function colorline2(data){
-				return "darkorange"
-			}
+				.attr("stroke-width", "1.5")
+				.attr("stroke-opacity",".75");
 			
 			svg.append("path")
 				.attr("d", line3(data))
 				.attr("class", "line3")
-				.attr("stroke", "darkred")
+				.attr("stroke", colorline3)
 				.attr("fill", "none")
-				.attr("stroke-width", "2")
-				.attr("stroke-opacity","1");
-		});
+				.attr("stroke-width", "1.5")
+				.attr("stroke-opacity",".75");
+			
+			svg.append("text")
+				.attr("x", (w / 2))             
+				.attr("y", top1-paddingV+17)
+				.attr("text-anchor", "middle")  
+				.style("font-size", "16px") 
+				.style("background-color", "red")
+				//.style("text-decoration", "underline")
+				.attr("font-family", "sans-serif")
+				.text("Tenerife Norte Airport SMR performance vs time");
+
+			svg.append("text")
+				.attr("x", (paddingH))             
+				.attr("y", top1-2)
+				.attr("text-anchor", "left")  
+				.style("font-size", "10px") 
+				//.style("text-decoration", "underline")
+				.attr("font-family", "sans-serif")
+				.on("click", function() {
+					//Do something  on click
+					//console.log("hi");
+					window.open("test1.html","_self")
+					})
+				.on("mouseover", function(){
+					//console.log("OVER");
+					setcursor("pointer");
+					})
+				.on("mouseout",function(){
+					setcursor("default")
+				})
+				.text("Probability of detection");
+			
+			function setcursor(cursor)
+					{
+					d3.select("body").style("cursor", cursor);
+					}
+
+			svg.append("text")
+				.attr("x", (paddingH))             
+				.attr("y", top2-2)
+				.attr("text-anchor", "left")  
+				.style("font-size", "10px") 
+				//.style("text-decoration", "underline")
+				.attr("font-family", "sans-serif")
+				.text("SUC mean delay");
+
+			svg.append("text")
+				.attr("x", (w1-paddingH*1.35))             
+				.attr("y", top2-2)
+				.attr("text-anchor", "right")  
+				.style("font-size", "10px") 
+				//.style("text-decoration", "underline")
+				.attr("font-family", "sans-serif")
+				.text("SUC max delay");
+			
+			svg.append("text")
+				.attr("x", paddingH)             
+				.attr("y", top3-2)
+				.attr("text-anchor", "left")  
+				.style("font-size", "10px") 
+				//.style("text-decoration", "underline")
+				.attr("font-family", "sans-serif")
+				.text("Plots in the record file");
+			
+			window.onresize = function(event){
+				//console.log("resized!");
+				location.reload();
+			}
+	});
 			//Create bars
 			/*svg.selectAll("rect")
-			   .data(dataset)
-			   .enter()
-			   .append("rect")
-			   .attr("x", function(d, i) {
-			   		return xScale1(i);
-			   })
-			   .attr("y", function(d) {
-			   		return h1 - yScale1(d);
-			   })
-			   .attr("width", "1")
-			   .attr("height", function(d) {
-			   		return yScale1(d);
-			   })
-			   .attr("fill", function(d) {
+				 .data(dataset)
+				 .enter()
+				 .append("rect")
+				 .attr("x", function(d, i) {
+				 		return xScale1(i);
+				 })
+				 .attr("y", function(d) {
+				 		return h1 - yScale1(d);
+				 })
+				 .attr("width", "1")
+				 .attr("height", function(d) {
+				 		return yScale1(d);
+				 })
+				 .attr("fill", function(d) {
 					return "rgb(0, 0, " + (d * 10) + ")";
-			   });
+				 });
 
 			//Create labels
 			svg.selectAll("text")
-			   .data(dataset)
-			   .enter()
-			   .append("text")
-			   .text(function(d) {
-			   		return d;
-			   })
-			   .attr("text-anchor", "middle")
-			   .attr("x", function(d, i) {
-			   		return xScale1(i) + xScale1.rangeBand() / 2;
-			   })
-			   .attr("y", function(d) {
-			   		return h1 - yScale1(d) + 14;
-			   })
-			   .attr("font-family", "sans-serif")
-			   .attr("font-size", "11px")
-			   .attr("fill", "white");*/
+				 .data(dataset)
+				 .enter()
+				 .append("text")
+				 .text(function(d) {
+				 		return d;
+				 })
+				 .attr("text-anchor", "middle")
+				 .attr("x", function(d, i) {
+				 		return xScale1(i) + xScale1.rangeBand() / 2;
+				 })
+				 .attr("y", function(d) {
+				 		return h1 - yScale1(d) + 14;
+				 })
+				 .attr("font-family", "sans-serif")
+				 .attr("font-size", "11px")
+				 .attr("fill", "white");*/
 			
 		</script>
-	</body>
+	</center> </p> </body>
 </html>
