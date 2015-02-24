@@ -329,7 +329,8 @@
 				.attr("x", (paddingH))             
 				.attr("y", top1-2)
 				.attr("text-anchor", "left")  
-				.style("font-size", "10px") 
+				.style("font-size", "10px")
+				.attr("background", "blue")
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
 				.on("click", function() {
@@ -344,7 +345,7 @@
 				.on("mouseout",function(){
 					setcursor("default")
 				})
-				.text("Probability of detection");
+				.text("Probability of detection. LifeTime mean: " + Number((d3.mean(data.PD)).toFixed(2)));
 			
 			function setcursor(cursor)
 					{
@@ -358,7 +359,7 @@
 				.style("font-size", "10px") 
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
-				.text("SUC mean delay");
+				.text("SUC mean delay. LifeTime mean: " + d3.mean(data.SUCmeanDelay) + " ms");
 
 			svg.append("text")
 				.attr("x", (w1-paddingH*1.35))             
@@ -376,7 +377,7 @@
 				.style("font-size", "10px") 
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
-				.text("Plots in the record file");
+				.text("Plots in the record file" );
 			
 			window.onresize = function(event){
 				//console.log("resized!");
