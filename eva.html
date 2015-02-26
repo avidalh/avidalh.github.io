@@ -5,7 +5,10 @@
 		<title>__simply eva__ </title>
 		<script type="text/javascript" src="d3.v3.min.js"></script>
 		<style type="text/css">
-		
+			
+			/* * {
+				outline: 1px solid red !important;
+			}*/
 			.axis path,
 			/*.axis line {
 				fill: none;
@@ -57,7 +60,7 @@
 
 		</style>
 	</head>
-	<body> <p> <center>
+	<body>
 		<script type="text/javascript">
 
 			//Width and height
@@ -84,9 +87,9 @@
 			var top3 = bottom2 + paddingV;
 			var bottom3 = top3 + h3;
 
-			var colorline1 = "darkgreen";
-			var colorline2 = "darkgreen";
-			var colorline3 = "darkgreen";
+			var colorline1 = "darkblue";
+			var colorline2 = "darkblue";
+			var colorline3 = "darkblue";
 
 			var svg = d3.select("body")
 						.append("svg")
@@ -98,8 +101,11 @@
 				d.Date = parseDate(d.Date);
 				d.PD = +d.PD;
 				d.ReadedPlots = +d.ReadedPlots;
-				d.SUCmeanDelay = +d.SUCmeanDelay;
+				d.SUCmeanDelay = +d.SUCmeanDelay; 
 				d.SUCmaxDelay = +d.SUCmaxDelay;
+				if (d.SUCmaxDelay > 1500) {console.log("bad data!, RPS could be stucked at analysis on",d.Date);d.SUCmaxDelay = 2000; };
+				d.CHN = +d.CHN;
+				if (d.CHN <1){d.CHN = 1;};
 				return d;
 			};
 			var parseDate = d3.time.format("%Y-%m-%d %H:%M").parse;
@@ -109,7 +115,9 @@
 				data.PD = data.map(function (d) { return d.PD; });
 				data.ReadedPlots = data.map(function (d) { return d.ReadedPlots; });
 				data.SUCmeanDelay = data.map(function (d) { return d.SUCmeanDelay; });
-				data.SUCmaxDelay = data.map(function(d) { return d.SUCmaxDelay;})
+				data.SUCmaxDelay = data.map(function(d) { return d.SUCmaxDelay;});
+				data.CHN = data.map(function(d){return d.CHN;});
+				console.log(data.CHN);
 
 				/*data = data.slice(0,30);
 				data.Date = data.Date.slice(0,30);
@@ -136,17 +144,21 @@
 							//.range([h1-0.5*paddingV,0.5*paddingV]);
 							.range([bottom1, top1]);
 
+			var yScale1_2 = d3.scale.linear()
+							.domain([d3.min(data.CHN) -0.2, d3.max(data.CHN)+10])
+							.range([bottom1, top1]);
+
 			var yScale2 = d3.scale.linear()
-							.domain([d3.min(data.SUCmeanDelay) -50, d3.max(data.SUCmeanDelay) +20])
+							.domain([d3.min(data.SUCmeanDelay)*0 -30*0, d3.max(data.SUCmeanDelay) +15])
 							//.range([ h1 + h2 -0.5*paddingV, h2+ 0.5*paddingV]);
 							.range([bottom2, top2]);
 			var yScale2_2 = d3.scale.linear()
-							.domain([d3.min(data.SUCmaxDelay) -2000, d3.max(data.SUCmaxDelay) +2000])
+							.domain([d3.min(data.SUCmaxDelay)*0 -2000*0, d3.max(data.SUCmaxDelay)*0 +2000])
 							//.range([ h1 + h2 -0.5*paddingV, h2+ 0.5*paddingV]);
 							.range([bottom2, top2]);
 
 			var yScale3 = d3.scale.linear()
-							.domain([d3.min(data.ReadedPlots) - 0*10000, d3.max(data.ReadedPlots) +10000])
+							.domain([d3.min(data.ReadedPlots)*0 - 0*10000, d3.max(data.ReadedPlots) +1000])
 							//.range([ h1 + h2 + h3 - 0.5*paddingV, h2 + h3 + 0.5*paddingV]);
 							.range([bottom3, top3]);
 
@@ -176,6 +188,12 @@
 							.tickSize(-(w1-2*paddingH),0)
 							.ticks(10)
 							.tickFormat(function(d) { return parseInt(d, 10) + " %"; });
+			var yAxis1_2 = d3.svg.axis()
+							.scale(yScale1_2)
+							.orient("right")
+							.tickSize(-w1+2*paddingH,0)
+							.ticks(10)
+							.tickFormat(function(d) { return parseInt(d, 10) + " ms"; });
 
 			var yAxis2 = d3.svg.axis()
 							.scale(yScale2)
@@ -197,12 +215,14 @@
 							.ticks(10)
 							.tickFormat(function(d) { return parseInt(d, 10) + " plts."; });;
 
-
-
 			var line1 = d3.svg.line()
 				.interpolate("linear")
 				.x(function(d){return xScale1(d.Date); })
 				.y(function(d){return yScale1(d.PD); });
+			var line1_2 = d3.svg.line()
+				.interpolate("step-after")
+				.x(function(d){return xScale1(d.Date); })
+				.y(function(d){return yScale1_2(d.CHN); });
 
 			var line2 = d3.svg.line()
 				.interpolate("linear")
@@ -257,8 +277,6 @@
 				.attr("transform", "translate(" + paddingH + ",0)")
 				.call(yAxis3);
 
-			
-
 
 			svg.append("path")
 				.attr("d", line1(data))
@@ -266,16 +284,14 @@
 				.attr("stroke", colorline1)
 				.attr("fill", "none")
 				.attr("stroke-width", "1.5")
-				.attr("stroke-opacity",".75");
-//debugger;
-
+				.attr("stroke-opacity",".8");
 			svg.append("path")
-				.attr("d", line2_2(data))
+				.attr("d", line1_2(data))
 				.attr("class", "line2")
-				.attr("stroke", "red")
+				.attr("stroke", "darkgreen")
 				.attr("fill", "none")
-				.attr("stroke-width", "1.5")
-				.attr("stroke-opacity",".75");
+				.attr("stroke-width", "3")
+				.attr("stroke-opacity",".6");
 
 			svg.append("path")
 				.attr("d", line2(data))
@@ -283,7 +299,16 @@
 				.attr("stroke", colorline2)
 				.attr("fill", "none")
 				.attr("stroke-width", "1.5")
-				.attr("stroke-opacity",".75");
+				.attr("stroke-opacity","1");
+
+			svg.append("path")
+				.attr("d", line2_2(data))
+				.attr("class", "line2")
+				.attr("stroke", "red")
+				.attr("fill", "none")
+				.attr("stroke-width", "1.5")
+				.attr("stroke-opacity",".6");
+
 			
 			svg.append("path")
 				.attr("d", line3(data))
@@ -394,5 +419,5 @@
 				 .attr("fill", "white");*/
 			
 		</script>
-	</center> </p> </body>
+	</body>
 </html>
