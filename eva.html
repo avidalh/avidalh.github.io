@@ -117,7 +117,8 @@
 				data.SUCmeanDelay = data.map(function (d) { return d.SUCmeanDelay; });
 				data.SUCmaxDelay = data.map(function(d) { return d.SUCmaxDelay;});
 				data.CHN = data.map(function(d){return d.CHN;});
-				console.log(data.CHN);
+
+				//console.log(data.CHN);
 
 				/*data = data.slice(0,30);
 				data.Date = data.Date.slice(0,30);
@@ -149,13 +150,13 @@
 							.range([bottom1, top1]);
 
 			var yScale2 = d3.scale.linear()
-<<<<<<< HEAD
-							.domain([d3.min(data.SUCmeanDelay)*0 -50*0, d3.max(data.SUCmeanDelay)*0 +200])
-||||||| merged common ancestors
-							.domain([d3.min(data.SUCmeanDelay) -50, d3.max(data.SUCmeanDelay) +20])
-=======
+//<<<<<<< HEAD
+//							.domain([d3.min(data.SUCmeanDelay)*0 -50*0, d3.max(data.SUCmeanDelay)*0 +200])
+//||||||| merged common ancestors
+//							.domain([d3.min(data.SUCmeanDelay) -50, d3.max(data.SUCmeanDelay) +20])
+//=======
 							.domain([d3.min(data.SUCmeanDelay)*0 -30*0, d3.max(data.SUCmeanDelay) +15])
->>>>>>> 4175ec1c0cb8b657b11e0b24f56189a555daf8ab
+//>>>>>>> 4175ec1c0cb8b657b11e0b24f56189a555daf8ab
 							//.range([ h1 + h2 -0.5*paddingV, h2+ 0.5*paddingV]);
 							.range([bottom2, top2]);
 			var yScale2_2 = d3.scale.linear()
