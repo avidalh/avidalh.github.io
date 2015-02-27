@@ -137,11 +137,11 @@
 							.range([bottom1, top1]);
 
 			var yScale2 = d3.scale.linear()
-							.domain([d3.min(data.SUCmeanDelay) -50, d3.max(data.SUCmeanDelay) +20])
+							.domain([d3.min(data.SUCmeanDelay)*0 -50*0, d3.max(data.SUCmeanDelay)*0 +200])
 							//.range([ h1 + h2 -0.5*paddingV, h2+ 0.5*paddingV]);
 							.range([bottom2, top2]);
 			var yScale2_2 = d3.scale.linear()
-							.domain([d3.min(data.SUCmaxDelay) -2000, d3.max(data.SUCmaxDelay) +2000])
+							.domain([d3.min(data.SUCmaxDelay)*0 -2000*0, d3.max(data.SUCmaxDelay)*0 +2000])
 							//.range([ h1 + h2 -0.5*paddingV, h2+ 0.5*paddingV]);
 							.range([bottom2, top2]);
 
