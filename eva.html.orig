@@ -6,8 +6,9 @@
 		<script type="text/javascript" src="d3.v3.min.js"></script>
 		<style type="text/css">
 			
-			 /* {outline: 1px solid red !important;}
-			 */
+			/* * {
+				outline: 1px solid red !important;
+			}*/
 			.axis path,
 			/*.axis line {
 				fill: none;
@@ -64,24 +65,19 @@
 
 			//Width and height
 
-			var paddingH = 150;
+			var paddingH = 200;
 			var paddingV = 50;
 			
 			var w = document.documentElement.clientWidth; //total svg size
-			var h = document.documentElement.clientHeight - 1*paddingV;
+			var h = document.documentElement.clientHeight - 3*paddingV;
 
-			var bigContainers = 4;
-			var smallContainers = 1;
+			
 			var w1 = w; // containers for each chart
-			var h1 = (h-4*paddingV)/bigContainers;
+			var h1 = (h-4*paddingV)/3;
 			var w2 = w;
-			var h2 = (h-4*paddingV)/bigContainers;
+			var h2 = (h-4*paddingV)/3;
 			var w3 = w;
-			var h3 = (h-4*paddingV)/bigContainers;
-
-			var w4 = w; //small container for CHN data
-			var h4 = 50;
-
+			var h3 = (h-4*paddingV)/3;
 
 			
 			var top1 = paddingV;
@@ -90,19 +86,6 @@
 			var bottom2 = top2 + h2;
 			var top3 = bottom2 + paddingV;
 			var bottom3 = top3 + h3;
-			var top4 = bottom3 + paddingV;
-			var bottom4 = top4 + h4;
-			
-			console.log(top1);
-			console.log(bottom1);
-			console.log(top2);
-			console.log(bottom2);
-			console.log(top3);
-			console.log(bottom3);
-			console.log(top4);
-			console.log(bottom4);
-
-
 
 			var colorline1 = "darkblue";
 			var colorline2 = "darkblue";
@@ -134,8 +117,7 @@
 				data.SUCmeanDelay = data.map(function (d) { return d.SUCmeanDelay; });
 				data.SUCmaxDelay = data.map(function(d) { return d.SUCmaxDelay;});
 				data.CHN = data.map(function(d){return d.CHN;});
-
-				//console.log(data.CHN);
+				console.log(data.CHN);
 
 				/*data = data.slice(0,30);
 				data.Date = data.Date.slice(0,30);
@@ -155,10 +137,7 @@
 			var xScale3 = d3.time.scale()
 							.range([0+paddingH, w3-paddingH])
 							.domain([data.Date[data.Date.length-1], data.Date[0]]);
-			
-			var xScale4 = d3.time.scale()
-							.range([0+paddingH, w3-paddingH])
-							.domain([data.Date[data.Date.length-1], data.Date[0]]);
+
 
 			var yScale1 = d3.scale.linear()
 							.domain([d3.min(data.PD) -5, d3.max(data.PD)+0])
@@ -166,11 +145,17 @@
 							.range([bottom1, top1]);
 
 			var yScale1_2 = d3.scale.linear()
-							.domain([d3.min(data.CHN) -0.2, d3.max(data.CHN)+5])
+							.domain([d3.min(data.CHN) -0.2, d3.max(data.CHN)+10])
 							.range([bottom1, top1]);
 
 			var yScale2 = d3.scale.linear()
+<<<<<<< HEAD
+							.domain([d3.min(data.SUCmeanDelay)*0 -50*0, d3.max(data.SUCmeanDelay)*0 +200])
+||||||| merged common ancestors
+							.domain([d3.min(data.SUCmeanDelay) -50, d3.max(data.SUCmeanDelay) +20])
+=======
 							.domain([d3.min(data.SUCmeanDelay)*0 -30*0, d3.max(data.SUCmeanDelay) +15])
+>>>>>>> 4175ec1c0cb8b657b11e0b24f56189a555daf8ab
 							//.range([ h1 + h2 -0.5*paddingV, h2+ 0.5*paddingV]);
 							.range([bottom2, top2]);
 			var yScale2_2 = d3.scale.linear()
@@ -182,10 +167,6 @@
 							.domain([d3.min(data.ReadedPlots)*0 - 0*10000, d3.max(data.ReadedPlots) +1000])
 							//.range([ h1 + h2 + h3 - 0.5*paddingV, h2 + h3 + 0.5*paddingV]);
 							.range([bottom3, top3]);
-
-			var yScale4 = d3.scale.linear()
-							.domain([d3.min(data.CHN) -0.2, d3.max(data.CHN)+5])
-							.range([bottom4, top4]);
 
 
 			//Define X axis
@@ -206,13 +187,6 @@
 							.tickSize(-(h1+h2+h3-paddingV),0)
 							.orient("bottom")
 							.ticks(30);
-
-			var xAxis4 = d3.svg.axis()
-							.scale(xScale4)
-							//.tickSize(-(h1+h2+h3+h4-paddingV),0)
-							.orient("bottom")
-							.ticks(30);
-							
 
 			var yAxis1 = d3.svg.axis()
 							.scale(yScale1)
@@ -245,14 +219,7 @@
 							.orient("left")
 							.tickSize(-(w1-2*paddingH),0)
 							.ticks(10)
-							.tickFormat(function(d) { return parseInt(d, 10) + " plts."; });
-			var yAxis4 = d3.svg.axis()
-							.scale(yScale4)
-							.orient("left")
-							.tickSize(-w4+2*paddingH,0)
-							.ticks(0);
-//							.tickFormat(function(d) { return parseInt(d, 10) + " ms"; });
-
+							.tickFormat(function(d) { return parseInt(d, 10) + " plts."; });;
 
 			var line1 = d3.svg.line()
 				.interpolate("linear")
@@ -278,12 +245,7 @@
 				.interpolate("linear")
 				.x(function(d){return xScale3(d.Date); })
 				.y(function(d){return yScale3(d.ReadedPlots); });
-			
-			/*var line4 = d3.svg.line()
-				.interpolate("step-after")
-				.x(function(d){return xScale1(d.Date); })
-				.y(function(d){return yScale4(d.CHN); });
-*/
+
 
 			//Create X axis
 			svg.append("g")
@@ -300,11 +262,6 @@
 				.attr("class", "axis")
 				.attr("transform", "translate(0," + (bottom3) + ")")
 				.call(xAxis1);
-			
-			svg.append("g")
-				.attr("class", "axis")
-				.attr("transform", "translate(0," + (bottom4) + ")")
-				.call(xAxis4);
 
 			//Create Y axis
 			svg.append("g")
@@ -326,10 +283,6 @@
 				.attr("transform", "translate(" + paddingH + ",0)")
 				.call(yAxis3);
 
-			svg.append("g")
-				.attr("class", "axis")
-				.attr("transform", "translate(" + paddingH + ",0)")
-				.call(yAxis4);
 
 			svg.append("path")
 				.attr("d", line1(data))
@@ -338,14 +291,13 @@
 				.attr("fill", "none")
 				.attr("stroke-width", "1.5")
 				.attr("stroke-opacity",".8");
-			/*svg.append("path")
+			svg.append("path")
 				.attr("d", line1_2(data))
 				.attr("class", "line2")
 				.attr("stroke", "darkgreen")
 				.attr("fill", "none")
-				.attr("stroke-width", "1.5")
-				.attr("stroke-opacity",".8");
-				*/
+				.attr("stroke-width", "3")
+				.attr("stroke-opacity",".6");
 
 			svg.append("path")
 				.attr("d", line2(data))
@@ -362,6 +314,7 @@
 				.attr("fill", "none")
 				.attr("stroke-width", "1.5")
 				.attr("stroke-opacity",".6");
+
 			
 			svg.append("path")
 				.attr("d", line3(data))
@@ -383,7 +336,7 @@
 
 			svg.append("text")
 				.attr("x", (paddingH))             
-				.attr("y", top1-5)
+				.attr("y", top1-2)
 				.attr("text-anchor", "left")  
 				.style("font-size", "11px")
 				.attr("background", "blue")
@@ -403,7 +356,7 @@
 
 			svg.append("text")
 				.attr("x", (paddingH))             
-				.attr("y", top2-5)
+				.attr("y", top2-2)
 				.attr("text-anchor", "left")  
 				.style("font-size", "11px") 
 				//.style("text-decoration", "underline")
@@ -412,7 +365,7 @@
 
 			svg.append("text")
 				.attr("x", (w1-paddingH*2))             
-				.attr("y", top2-5)
+				.attr("y", top2-2)
 				.attr("text-anchor", "right")  
 				.style("font-size", "11px") 
 				//.style("text-decoration", "underline")
@@ -421,7 +374,7 @@
 			
 			svg.append("text")
 				.attr("x", paddingH)             
-				.attr("y", top3-5)
+				.attr("y", top3-2)
 				.attr("text-anchor", "left")  
 				.style("font-size", "11px") 
 				//.style("text-decoration", "underline")
@@ -432,32 +385,27 @@
 				//console.log("resized!");
 				location.reload();
 			}
-	
+	});
 			//Create bars
-			svg.selectAll("rect")
-				 .data(data)
+			/*svg.selectAll("rect")
+				 .data(dataset)
 				 .enter()
 				 .append("rect")
-				 .attr("x", (function(d){return xScale2(d.Date); }))
-				 .attr("y", (function(d){return top4; }))
+				 .attr("x", function(d, i) {
+				 		return xScale1(i);
+				 })
+				 .attr("y", function(d) {
+				 		return h1 - yScale1(d);
+				 })
 				 .attr("width", "1")
 				 .attr("height", function(d) {
-				 		return h4;
+				 		return yScale1(d);
 				 })
 				 .attr("fill", function(d) {
-				 	if (d.CHN == 1){return ("darkorange")};
-				 	if (d.CHN == 2){return ("steelblue")};
-				 	if (d.CHN <2){return ("red")};
-//					return "rgb("+ ((d.CHN) * 255) +", 0, " + ((d.CHN-1) * 255) + ")";
-				 })
-				 .attr("fill-opacity", "0.5");
+					return "rgb(0, 0, " + (d * 10) + ")";
+				 });
 
-		});
-
-
-
-
-			/*//Create labels
+			//Create labels
 			svg.selectAll("text")
 				 .data(dataset)
 				 .enter()
