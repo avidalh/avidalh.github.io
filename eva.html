@@ -80,7 +80,7 @@
 			var h3 = (h-4*paddingV)/bigContainers;
 
 			var w4 = w; //small container for CHN data
-			var h4 = 50;
+			var h4 = 25;
 
 
 			
@@ -92,7 +92,7 @@
 			var bottom3 = top3 + h3;
 			var top4 = bottom3 + paddingV;
 			var bottom4 = top4 + h4;
-			
+			/*
 			console.log(top1);
 			console.log(bottom1);
 			console.log(top2);
@@ -101,6 +101,7 @@
 			console.log(bottom3);
 			console.log(top4);
 			console.log(bottom4);
+			*/
 
 
 
@@ -358,7 +359,7 @@
 			svg.append("path")
 				.attr("d", line2_2(data))
 				.attr("class", "line2")
-				.attr("stroke", "red")
+				.attr("stroke", "steelblue")
 				.attr("fill", "none")
 				.attr("stroke-width", "1.5")
 				.attr("stroke-opacity",".6");
@@ -431,7 +432,16 @@
 			window.onresize = function(event){
 				//console.log("resized!");
 				location.reload();
-			}
+			};
+
+			svg.append("text")
+				.attr("x", paddingH)             
+				.attr("y", top4-5)
+				.attr("text-anchor", "left")  
+				.style("font-size", "11px") 
+				//.style("text-decoration", "underline")
+				.attr("font-family", "sans-serif")
+				.text("Channel in service, orange: chanel 1, blue: channel 2, red: channel changed during recording");
 	
 			//Create bars
 			svg.selectAll("rect")
@@ -440,7 +450,7 @@
 				 .append("rect")
 				 .attr("x", (function(d){return xScale2(d.Date); }))
 				 .attr("y", (function(d){return top4; }))
-				 .attr("width", "1")
+				 .attr("width", "1.5")
 				 .attr("height", function(d) {
 				 		return h4;
 				 })
