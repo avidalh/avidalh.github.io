@@ -38,7 +38,7 @@
 			}
 			.axis2 line{
 				fill: none;
-				stroke: red;
+				stroke: steelblue;
 				stroke-opacity: .25;
 				stroke-dasharray: 4,1;
 				stroke-width: 1;
@@ -107,6 +107,7 @@
 
 			var colorline1 = "darkblue";
 			var colorline2 = "darkblue";
+			var colorline2_2 = "steelblue";
 			var colorline3 = "darkblue";
 
 			var svg = d3.select("body")
@@ -359,7 +360,7 @@
 			svg.append("path")
 				.attr("d", line2_2(data))
 				.attr("class", "line2")
-				.attr("stroke", "steelblue")
+				.attr("stroke", colorline2_2)
 				.attr("fill", "none")
 				.attr("stroke-width", "1.5")
 				.attr("stroke-opacity",".6");
@@ -377,17 +378,17 @@
 				.attr("y", top1-paddingV+17)
 				.attr("text-anchor", "middle")  
 				.style("font-size", "20px") 
-				.style("background-color", "red")
+				.attr("fill", "black")
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
 				.text("Tenerife Norte Airport SMR performance vs time");
 
 			svg.append("text")
 				.attr("x", (paddingH))             
-				.attr("y", top1-5)
+				.attr("y", top1-10)
 				.attr("text-anchor", "left")  
 				.style("font-size", "11px")
-				.attr("background", "blue")
+				.attr("fill", colorline1)
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
 				.on("click", function() {window.open("test1.html","_self");})
@@ -404,29 +405,32 @@
 
 			svg.append("text")
 				.attr("x", (paddingH))             
-				.attr("y", top2-5)
+				.attr("y", top2-10)
 				.attr("text-anchor", "left")  
 				.style("font-size", "11px") 
+				.attr("fill", colorline2)
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
 				.text("SUC mean delay (mean: " + Number((d3.mean(data.SUCmeanDelay)).toFixed(2)) + " ms)");
 
 			svg.append("text")
 				.attr("x", (w1-paddingH*2))             
-				.attr("y", top2-5)
+				.attr("y", top2-10)
 				.attr("text-anchor", "right")  
 				.style("font-size", "11px") 
+				.attr("fill", colorline2_2)
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
 				.text("SUC max delay (mean: "+ Number((d3.mean(data.SUCmaxDelay)).toFixed(2)) + " ms)");
 			
 			svg.append("text")
 				.attr("x", paddingH)             
-				.attr("y", top3-5)
+				.attr("y", top3-10)
 				.attr("text-anchor", "left")  
 				.style("font-size", "11px") 
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
+				.attr("fill", colorline3)
 				.text("Plots in the file (mean: "+ Number((d3.mean(data.ReadedPlots)).toFixed(0)) + " plts)" );
 			
 			window.onresize = function(event){
@@ -436,7 +440,7 @@
 
 			svg.append("text")
 				.attr("x", paddingH)             
-				.attr("y", top4-5)
+				.attr("y", top4-10)
 				.attr("text-anchor", "left")  
 				.style("font-size", "11px") 
 				//.style("text-decoration", "underline")
