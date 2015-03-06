@@ -220,34 +220,34 @@
 							.scale(yScale1)
 							.orient("left")
 							.tickSize(-(w1-2*paddingH),0)
-							.ticks(10)
+							.ticks(5)
 							.tickFormat(function(d) { return parseInt(d, 10) + " %"; });
 			var yAxis1_2 = d3.svg.axis()
 							.scale(yScale1_2)
 							.orient("right")
 							.tickSize(-w1+2*paddingH,0)
-							.ticks(10)
+							.ticks(5)
 							.tickFormat(function(d) { return parseInt(d, 10) + " ms"; });
 
 			var yAxis2 = d3.svg.axis()
 							.scale(yScale2)
 							.orient("left")
 							.tickSize(-(w1-2*paddingH),0)
-							.ticks(10)
+							.ticks(5)
 							.tickFormat(function(d) { return parseInt(d, 10) + " ms"; });
 			var yAxis2_2 = d3.svg.axis()
 							.scale(yScale2_2)
 							.orient("right")
 							.tickSize(-w1+2*paddingH,0)
-							.ticks(10)
+							.ticks(5)
 							.tickFormat(function(d) { return parseInt(d, 10) + " ms"; });
 
 			var yAxis3 = d3.svg.axis()
 							.scale(yScale3)
 							.orient("left")
 							.tickSize(-(w1-2*paddingH),0)
-							.ticks(10)
-							.tickFormat(function(d) { return parseInt(d, 10) + " plts."; });
+							.ticks(5)
+							.tickFormat(function(d) { return parseInt(d/1000, 10) + "K plts."; });
 			var yAxis4 = d3.svg.axis()
 							.scale(yScale4)
 							.orient("left")
