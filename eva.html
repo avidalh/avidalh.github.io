@@ -120,7 +120,8 @@
 				d.Date = parseDate(d.Date);
 				d.PD = +d.PD;
 				d.ReadedPlots = +d.ReadedPlots;
-				d.SUCmeanDelay = +d.SUCmeanDelay; 
+				d.SUCmeanDelay = +d.SUCmeanDelay;
+				if (d.SUCmeanDelay < 0) {console.log("bad data!, RPS could be stucked at analysis on",d.Date);d.SUCmeanDelay = 0;}
 				d.SUCmaxDelay = +d.SUCmaxDelay;
 				if (d.SUCmaxDelay > 1500) {console.log("bad data!, RPS could be stucked at analysis on",d.Date);d.SUCmaxDelay = 2000; };
 				d.CHN = +d.CHN;
@@ -194,26 +195,26 @@
 			var xAxis1 = d3.svg.axis()
 							.scale(xScale1)
 							.tickSize(-(h1),0)
-							.orient("bottom")
-							.ticks(30);
+							.orient("bottom");
+							//.ticks(30);
 
 			var xAxis2 = d3.svg.axis()
 							.scale(xScale2)
 							.tickSize(-(h1+h2-paddingV),0)
 							.orient("bottom")
-							.ticks(30);
+							.ticks(10);
 
 			var xAxis3 = d3.svg.axis()
 							.scale(xScale3)
 							.tickSize(-(h1+h2+h3-paddingV),0)
 							.orient("bottom")
-							.ticks(30);
+							.ticks(10);
 
 			var xAxis4 = d3.svg.axis()
 							.scale(xScale4)
 							//.tickSize(-(h1+h2+h3+h4-paddingV),0)
 							.orient("bottom")
-							.ticks(20);
+							.ticks(10);
 							
 
 			var yAxis1 = d3.svg.axis()
@@ -340,6 +341,7 @@
 				.attr("fill", "none")
 				.attr("stroke-width", "1.5")
 				.attr("stroke-opacity",".8");
+				
 			/*svg.append("path")
 				.attr("d", line1_2(data))
 				.attr("class", "line2")
