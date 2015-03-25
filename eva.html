@@ -398,7 +398,7 @@
 				.on("mouseout",function(){
 					setcursor("default")
 				})
-				.text("Probability of detection (mean: " + Number((d3.mean(data.PD)).toFixed(2)) + " %)");
+				.text("Probability of detection (average: " + Number((d3.mean(data.PD)).toFixed(2)) + " %)");
 			
 			function setcursor(cursor)
 					{
@@ -413,7 +413,7 @@
 				.attr("fill", colorline2)
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
-				.text("SUC mean delay (mean: " + Number((d3.mean(data.SUCmeanDelay)).toFixed(2)) + " ms)");
+				.text("SUC mean delay (average: " + Number((d3.mean(data.SUCmeanDelay)).toFixed(2)) + " ms)");
 
 			svg.append("text")
 				.attr("x", (w1-paddingH*2))             
@@ -423,7 +423,7 @@
 				.attr("fill", colorline2_2)
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
-				.text("SUC max delay (mean: "+ Number((d3.mean(data.SUCmaxDelay)).toFixed(2)) + " ms)");
+				.text("SUC max delay (average: "+ Number((d3.mean(data.SUCmaxDelay)).toFixed(2)) + " ms)");
 			
 			svg.append("text")
 				.attr("x", paddingH)             
@@ -433,7 +433,7 @@
 				//.style("text-decoration", "underline")
 				.attr("font-family", "sans-serif")
 				.attr("fill", colorline3)
-				.text("Plots in the file (mean: "+ Number((d3.mean(data.ReadedPlots)).toFixed(0)) + " plts)" );
+				.text("Plots in the file (average: "+ Number((d3.mean(data.ReadedPlots)).toFixed(0)) + " plts)" );
 			
 			window.onresize = function(event){
 				//console.log("resized!");
